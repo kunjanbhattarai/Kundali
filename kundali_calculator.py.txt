@@ -1,0 +1,18 @@
+import swisseph as swe
+from datetime import datetime
+import pytz
+
+def get_planet_positions(date, time, latitude, longitude):
+    utc_dt = datetime.strptime(date + ' ' + time, '%Y-%m-%d %H:%M')
+    utc_dt = pytz.utc.localize(utc_dt)
+
+    jd = swe.utc_to_jd(utc_dt.year, utc_dt.month, utc_dt.day, utc_dt.hour, utc_dt.minute, 0, flag=swe.GREG_CAL)[0]
+
+    planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Rahu", "Ketu"]
+    positions = {}
+
+    for i, planet in enumerate(planets):
+        pos, _ = swe.calc_ut(jd, i)
+        positions[planet] = pos[0]  # Longitude in degrees
+
+    return positions

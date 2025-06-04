@@ -1,0 +1,5 @@
+def get_navamsa_chart(planets):
+    navamsa_positions = {}
+    for planet, position in planets.items():
+        navamsa_positions[planet] = (position % 30) * 9  # Simplified Navamsa calculation
+    return navamsa_positions

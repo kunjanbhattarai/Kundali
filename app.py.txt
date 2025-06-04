@@ -1,0 +1,26 @@
+from flask import Flask, request, jsonify
+from kundali_calculator import get_planet_positions
+from navamsa_chart import get_navamsa_chart
+from ai_chatbot import get_astrology_insights
+
+app = Flask(__name__)
+
+@app.route("/generate_kundali", methods=["POST"])
+def generate_kundali():
+    data = request.json
+    planets = get_planet_positions(data["date"], data["time"], data["latitude"], data["longitude"])
+    navamsa = get_navamsa_chart(planets)
+    
+    return jsonify({
+        "kundali": planets,
+        "navamsa": navamsa
+    })
+
+@app.route("/ask_astrology", methods=["POST"])
+def ask_astrology():
+    question = request.json["question"]
+    answer = get_astrology_insights(question)
+    return jsonify({"response": answer})
+
+if __name__ == "__main__":
+    app.run(debug=True)
