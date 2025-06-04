@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kundali Generator</title>
+</head>
+<body>
+    <h1>Generate Your Kundali</h1>
+    <form id="kundaliForm">
+        Name: <input type="text" id="name"><br>
+        Date of Birth: <input type="date" id="dob"><br>
+        Time of Birth: <input type="time" id="time"><br>
+        Latitude: <input type="text" id="lat"><br>
+        Longitude: <input type="text" id="lon"><br>
+        <button type="submit">Generate Kundali</button>
+    </form>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById("kundaliForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            fetch("https://your-deployed-api.com/generate_kundali", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    date: document.getElementById("dob").value,
+                    time: document.getElementById("time").value,
+                    latitude: document.getElementById("lat").value,
+                    longitude: document.getElementById("lon").value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+            });
+        });
+    </script>
+</body>
+</html>
